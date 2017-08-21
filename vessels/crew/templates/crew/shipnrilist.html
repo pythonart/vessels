@@ -1,0 +1,38 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} {{ person.first_name }} {{ person.last_name }} <br> Financial Year {{ finyr }} {% endblock %} 
+{% block viewnamesmall %} NRI Status Per Vessel {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block content %}
+
+
+<div class="box-body table-responsive">
+ <table class="table table-bordered" >
+<tr>
+    <th> # </th>
+    <th> Vessel </th>
+    <th> Rank  </th>
+    <th> Date Signed On </th>
+    <th> Date Signed Off </th>
+    <th> Financial Year / Nri Days </th>
+</tr>
+{% for seatime  in  seatimes %}
+<tr> 
+    <td> {{ forloop.counter }} </td>
+    <td> {{ seatime.vessel_name }} </td>
+    <td> {{ seatime.rank }} </td>
+    <td> {{ seatime.date_signed_on }} </td>
+    <td> {{ seatime.date_signed_off }} </td>
+    <td> 
+    {% for item in seatime.nrt.nriList %}    
+     <p {% if item.yr.finYrName|stringformat:"s" == finyr|stringformat:"s" %}class="text-success"  {% endif %}>  Yr:  {{ item.yr.finYrName }} 
+      
+      Months:  {{ item.nriDays.months }} Days: {{ item.nriDays.days }} </p>
+      {% endfor %}
+    </td>
+</tr>
+
+{% endfor %}
+ </table>
+</div>
+{% endblock %}

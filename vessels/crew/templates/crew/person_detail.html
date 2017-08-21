@@ -1,0 +1,162 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Person Details {% endblock %} 
+{% block viewnamesmall %} {{ object |title }}  {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<!-- /.box-header -->
+
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header with-border">
+                <h3 class="box-title">{{ object.salutation |capfirst }} {{ object |title }} Details </h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsove">
+              <table class="table table-bordered">
+                <tr>
+                    <td> Key No </td>
+                    <td> {{ object.key_number }}
+                </tr>   
+
+                <tr>
+                    <td> Name </td>
+                    <td> {{ object.salutation }} {{ object.first_name |capfirst }} {{ object.last_name |capfirst }}
+
+                 </tr>
+                 <tr>
+                    <td> Rank </td>
+                    <td> {{ object.rank |capfirst }}
+                 </tr> 
+                <tr>
+                    <td>Date Joined Company </td>
+                    <td> {{ object.date_joined_company |date:"d-m-Y"  }} </td>
+                 </tr>  
+                 <tr>
+                    <td> Gender</td>
+                    <td> {{ object.gender |capfirst }} </td>
+                 </tr>    
+                 <tr>
+                       <td>Date of Birth </td>
+                       <td> {{ object.dob|date:"d-m-Y" }} </td>
+                 </tr> 
+                 <tr>
+                    <td>Place of Birth </td>
+                    <td> {{ object.place_of_birth |capfirst  }} </td>
+                 </tr>
+                 <tr>
+                    <td>Country of Birth</td>
+                    <td>{{ object.country_of_birth |capfirst }} </td>
+                 </tr> 
+                 <tr>
+                    <td> Nationality </td>
+                    <td> {{ object.nationality |capfirst }} </td>
+                 </tr>   
+                 <tr>
+                    <td> Email </td>
+                    <td> {{ object.email |lower  }} </td>
+                 </tr> 
+                 <tr>
+                    <td>Address</td>
+                    <td> {{ object.address }} </td>   
+                 </tr>    
+                 <tr>
+                     <td> Resume</td>
+                     <td> {% if object.resume %}
+                                <a href={{ object.resume.url }} > View </a>
+                          {% else %}  
+                                    No Resume Uploaded   
+                          {% endif %}
+                       </td>
+                 </tr>
+                 {% if request.user.is_staff  %}   
+                 <tr>
+                     <td> Incompatible With Persons</td>
+                     <td> {% for incompatible_person in object.incompatible_with.all %}
+                                <a href={{ incompatible_person.get_absolute_url }} >{{ forloop.counter }}. {{ incompatible_person.first_name }} {{ incompatible_person.last_name }}</a><br>
+                          {% endfor %}
+                        
+                       </td>
+                 </tr>                                
+                 {% endif %}
+
+                </table>
+                
+            </div>
+          <!-- /.box -->
+        </div>
+              
+    </div>
+    <div class="col-md-4">
+           <div class="box" >
+               {% if object.photo %}
+                <div class="box-body box-profile">  
+                     <img class="profile-user-img img-responsive img-circle" src="{{ object.photo.url }}" alt="{{ object }}">
+
+               </div>
+              {% endif %}
+           </div> 
+
+            <div class="box" >
+               {% if object %}
+               <div class="box-footer no-padding">
+              <ul class="nav nav-stacked">
+                <li><a href="{% url 'crew:person_seatime_detail' object.id %}">Total Seatime <span class="pull-right badge bg-blue">
+                    
+                    Y : {{ object.total_seatime.years }}  M :{{ object.total_seatime.months }} 
+                         D :  {{ object.total_seatime.days }} 
+                     
+                    </span></a></li>
+                <li><a href="{% url 'crew:person_seatime_detail' object.id %}"> <b> {{ object.rank }} </b> Sea Time <span class="pull-right badge bg-aqua">    
+                        Y : {{ object.seatime_present_rank.years }} M :{{ object.seatime_present_rank.months }} 
+                          D :  {{ object.seatime_present_rank.days }} 
+                       </span></a></li>
+                <li><a href="{% url 'crew:person_seatime_detail' object.id %}">Sea Time Tanker <span class="pull-right badge bg-green">
+                    Y : {{ object.seatime_tankers.years }} M :{{ object.seatime_tankers.months }} 
+                          D :  {{ object.seatime_tankers.days }} 
+                    </span></a></li>
+                <li><a href="{% url 'crew:person_seatime_detail' object.id %}">Time with Operator <span class="pull-right badge bg-green">
+                    Y : {{ object.time_with_operator.years }} M :{{ object.time_with_operator.months }} 
+                          D :  {{ object.time_with_operator.days }} 
+                    </span></a></li>
+              
+              </ul>
+        </div>
+
+
+              {% endif %}
+           </div>  
+
+            {% if request.user.is_staff  %}  
+           <div class="box">
+                 <div class="box-body">
+                 <p><a type="button" class="btn btn-block btn-danger btn-sm" href="{% url 'crew:person_delete' object.id %}" >  Delete User</a>
+                </div>  
+            </div>    
+            <div class="box">
+                <div class="box-body">
+                 <p><a href="{% url 'crew:person_update' object.id %}" > <button bgcolor="red">Update User</button></a>
+                </div>  
+         </div>    
+            {% endif %}
+        {% comment %}  below user.id is used instead of request.user as django automatically stores logged in user as user in template  {% endcomment %}
+        {% if user.id|stringformat:"d" == object.user.id|stringformat:"d" %}  
+        
+        <div class="box">
+                <div class="box-body">
+                 <p><a href="{% url 'password_change'  %}" > <button bgcolor="red">Change Password</button></a>
+                </div>  
+         </div>    
+         {% endif %}
+
+
+<!-- /.box-body -->
+<!-- /.box -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

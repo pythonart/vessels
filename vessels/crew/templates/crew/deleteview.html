@@ -1,0 +1,31 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Delete {% endblock %} 
+{% block viewnamesmall %} Delete {{ object|title }} {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<!-- /.box-header -->
+<div class="box-body">
+    
+<form action="" method="post">{% csrf_token %}
+<p>Are you sure you want to delete "{{ object|title }}"?</p>
+
+<p> All related fields will be deleted </p>
+
+<input type="submit" value="Confirm" />
+</form>
+
+<div class="box-body">
+<p> Return to <a href="{% url 'crew:index' %}"> Main Page</a ></p> 
+</div>
+
+</div>
+<!-- /.box -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

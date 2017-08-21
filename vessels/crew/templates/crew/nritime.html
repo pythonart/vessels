@@ -1,0 +1,30 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} {{ person.first_name }} {{ person.last_name }} {% endblock %} 
+{% block viewnamesmall %} NRI Status {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block content %}
+
+
+<div class="box-body table-responsive">
+ <table class="table table-bordered" >
+<tr>
+    <th> # </th>
+    <th> Financial Year</th>
+    <th> NRI Days </th>
+    <th> Days Required to Complete NRI </th>
+    <th> Join by Date to Complete NRI </th>
+</tr>
+{% for nri  in  nrilist %}
+<tr {% if nri.current %} class="text-primary" {% endif %}  > 
+    <td> {{ forloop.counter }} </td>
+    <td><a href="{% url 'crew:person_nri_seatime' person.id nri.yr.finYrName  %}" title='Click to see Vessels'> {{ nri.yr.finYrName  }} </a> </td>
+    <td> M: {{ nri.nriDays.months }} D: {{ nri.nriDays.days }}  </td>
+    <td> M: {{ nri.daysToCompleteNri.months }} D: {{ nri.daysToCompleteNri.days }}  </td>
+    <td> {{ nri.departByForNRI|date:"d M Y" }} </td>
+</tr>
+
+{% endfor %}
+ </table>
+</div>
+{% endblock %}

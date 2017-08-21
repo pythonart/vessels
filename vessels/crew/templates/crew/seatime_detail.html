@@ -1,0 +1,130 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Seatime  Details {% endblock %} 
+{% block viewnamesmall %} {{ object |title }}  {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<!-- /.box-header -->
+
+
+<div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                <h3 class="box-title">{{ object.salutation |capfirst }} {{ object |title }} Details </h3>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+              <table class="table table-bordered">
+                 <tr>
+                    <th> # </th> 
+                    <th> Person </th>
+                    <th> Vessel </th>
+                    <th> Rank </th>
+                    <th> Date Signed on </th>
+                    <th> Date Signed off </th>
+                    <th> Years / Months / Days </th>
+                    <th> Action </th>
+                 </tr>  
+                {% if seatime_list %} 
+                 {{ seatime_list.has_next }}
+                 {% for seatime in seatime_list  %}
+                    <tr>
+                       <td> {{ forloop.counter0|add:seatime_list.start_index }} </td>
+                       <td><a href="{% url 'crew:person_detail' seatime.person.id %}" > {{ seatime.person }} </a> </td>
+                       <td> {{ seatime.vessel_name }} </td>
+                       <td> {{ seatime.rank }} </td>
+                       <td><a href="{% url 'crew:seatime_edit' seatime.id %}"> {{ seatime.date_signed_on  }} </a> </td>
+                       <td>
+                           {% if seatime.date_signed_off  %}
+                                    <a href="{% url 'crew:seatime_edit' seatime.id %}"> {{ seatime.date_signed_off }}</a> </td>
+                           {% else %} <a href="{% url 'crew:seatime_edit' seatime.id %}"> Enter Sign off Date </a>
+                           {% endif %}
+                       <td> Y : {{ seatime.seatime.years }} <br> M : {{ seatime.seatime.months }} <br> D : {{ seatime.seatime.days }} </td>
+                       <td> 
+                           <div class="btn-group">
+                          <a type="button" class="btn btn-block btn-danger btn-sm" href="{% url 'crew:seatime_delete' seatime.id %}" >  Delete</a>
+                           </div>
+                           
+                            </td>
+                    </tr>      
+                 {% endfor  %}
+
+                 {% else %}
+                    
+                    <tr>
+                    <td>   </td>    
+                     <td> No Sea Time Entered for Person </td>
+                    </tr>    
+
+                 {% endif %}  
+                  
+                </table>
+       
+
+ <div class="pagination">
+    <span class="page-links">
+        {% if seatime_list.has_previous %}
+            <a href="{{ request.path}}?page={{ seatime_list.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ seatime_list.number }} of {{ seatime_list.paginator.num_pages }}.
+        </span>
+        {% if seatime_list.has_next %}
+        <a href="{{ request.path}}?page={{ seatime_list.next_page_number }}">next</a>
+   
+    </span>
+ </div>
+
+
+{% endif %}   
+        </div>
+
+
+                             </div>
+          <!-- /.box -->
+
+
+    </div>        
+<div class="col-md-6">
+    <div class="box" >
+        <div class="box-footer no-padding">
+              <ul class="nav nav-stacked">
+                <li><a href="#">Total Seatime <span class="pull-right badge bg-blue">
+                    
+                    Y : {{ crew.total_seatime.years }}  M :{{ crew.total_seatime.months }} 
+                         D :  {{ crew.total_seatime.days }} 
+                     
+                    </span></a></li>
+                <li><a href="#"> <b> {{ crew.rank }} </b> Sea Time <span class="pull-right badge bg-aqua">    
+                        Y : {{ crew.seatime_present_rank.years }} M :{{ crew.seatime_present_rank.months }} 
+                          D :  {{ crew.seatime_present_rank.days }} 
+                       </span></a></li>
+                <li><a href="#">Sea Time Tanker <span class="pull-right badge bg-green">
+                    Y : {{ crew.seatime_tankers.years }} M :{{ crew.seatime_tankers.months }} 
+                          D :  {{ crew.seatime_tankers.days }} 
+                    </span></a></li>
+                <li><a href="#">Time with Operator <span class="pull-right badge bg-green">
+                    Y : {{ crew.time_with_operator.years }} M :{{ crew.time_with_operator.months }} 
+                          D :  {{ crew.time_with_operator.days }} 
+                    </span></a></li>
+              
+              </ul>
+        </div>
+    </div>
+</div>  
+
+
+
+
+<!-- /.box-body -->
+<!-- /.box -->
+</section>
+<!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

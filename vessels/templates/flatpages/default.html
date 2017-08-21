@@ -1,0 +1,17 @@
+{% extends "crew/base.html" %} 
+{% block title %} {{ flatpage.title }} {% endblock %} 
+{% block viewname %} {{ flatpage.title }} {% endblock %} 
+
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+
+{%block content %}
+  <div class="box-header with-border">
+      <h4 align="center"> {{ flatpage.title }} </h4>
+  </div>
+  <div class="box-body">
+        <div class="col-xs-12" >
+           {{ flatpage.content }} 
+        </div>
+  </div>
+{% endblock %}

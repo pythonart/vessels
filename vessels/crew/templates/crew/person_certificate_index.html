@@ -1,0 +1,60 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Crew Certificates {% endblock %} 
+{% block viewnamesmall %} {{ object |title }}  {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+
+
+ <div class="box-header with-border">
+      <h5 align="center"> Crew Certificates </h5>
+  </div>
+  <div class="box-body table-responsive">
+       <table class="table table-bordered">
+          <tr>
+            <th  style="width: 10px">#</th>
+            <th>Person</th>
+            <th>Certificate</th>
+            <th>Date Issued</th>
+            <th>Date Expiry</th>
+            <th >Issuing Authority</th>
+            <th>Place of Issue</th>
+            <th>Certificate No</th>
+            <th>View Certificaate</th>
+            <th>Delete Certificaate</th>
+        </tr>
+          {% if crew_certificate %}
+            
+            {% for certificate in crew_certificate %}
+            <tr>
+              <td> {{ forloop.counter }}</td>
+              <td><a href="{% url 'crew:person_detail' certificate.person_id %}" > {{ certificate.person }} </a> </td>
+              <td> <a href="{% url 'crew:person_certificate_update' certificate.id %}" > {{ certificate.certificate }} </td>
+              <td> {{ certificate.date_issued }} </td>
+              <td {% if  certificate.expired == True %}  class='label-warning' {% endif %} >
+                   
+                   {{  certificate.date_expiry }}
+                    
+                    </td>
+              <td> {{ certificate.institute_name }} </td>
+              <td> {{ certificate.issued_place }} </td>
+              <td> {{ certificate.certificate_no }} </td>
+              <td> {% if certificate.certificate_file %}
+                                <a href={{ certificate.certificate_file.url }} > View </a>
+                          {% else %}  
+                                    No Certificate Uploaded   
+                          {% endif %}</td>
+               <td> <a type="button" class="btn btn-block btn-danger btn-sm" href="{% url 'crew:person_certificate_delete' certificate.id %}" >  Delete </a> </td>
+
+            </tr>
+            {% endfor %}  
+          {% endif %}
+      </table>
+   </div>
+
+
+
+
+
+{% endblock %}

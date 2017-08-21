@@ -1,0 +1,79 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Human Resource {% endblock %} 
+{% block viewnamesmall %} List of Employees {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<!-- /.box-header -->
+<div class="box-body table-responsive">
+    <table class="table table-bordered" >
+        <tr>
+            {% if person %}
+            <th style="width: 10px">#</th>
+            <th>Name</th>
+            <th>Rank</th>
+            <th>Gender</th>
+            <th>DOB</th>
+            <th>Actions</th>
+            <th>Photo</th>
+
+        </tr>
+        {% endif %} {% if person %} {% for person_details in person %}
+        <tr>
+            <td>{{forloop.counter0|add:page_obj.start_index }}</td>
+            <td><a href="{% url 'crew:person_detail' person_details.id %}"> {{person_details.salutation}} .{{person_details.first_name }} {{ person_details.last_name }}</a> </td>
+            <td> {{person_details.rank }} </td>
+            <td> {{person_details.gender }} </td>
+            <td> {{person_details.dob }} </td>
+            <td>
+                <div class="btn-group">
+                    <a type="button" class="btn btn-block btn-info btn-xs"  href="{% url 'crew:person_seatime_detail' person_details.id %}"> Sea Time </a>  <br>
+                    <a type="button" class="btn btn-block btn-success btn-xs"  href="{% url 'crew:person_contract_detail' person_details.id %}" > Contracts </a> 
+                    <a type="button" class="btn btn-block btn-danger btn-xs"  href="{% url 'crew:person_certificates' person_details.id %}" > Certificates </a>
+                    <a type="button" class="btn btn-block btn-info btn-xs"  href="{% url 'crew:person_nri' person_details.id %}" > NRI Status </a>  
+                </div>
+            </td>
+            <td>{% if  person_details.photo %}<img src="{{ person_details.photo.url }}" class="img-circle" alt="User Image">{% endif %} </td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+            <td></td>
+            <td>
+                <p>No Crew in list.</p>
+            </td>
+        </tr>
+
+
+        {% endif %}
+    </table>
+
+ {% if is_paginated %} 
+      <div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{{ request.path}}?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="{{ request.path}}?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+       
+    </span>
+</div>
+ </div>
+{% endif %}
+</div>
+<!-- /.box-body -->
+
+</div>
+<!-- /.box -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

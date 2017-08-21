@@ -1,0 +1,85 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Human Resource {% endblock %} 
+{% block viewnamesmall %} List of Contracts {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:contract_view' %}"> Crew </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<!-- /.box-header -->
+<div class="box-body table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            {% if contract %}
+            <th style="width: 10px">#</th>
+            <th>Person</th>
+            <th>Rank</th>
+            <th>Vessel</th>
+            <th>Duration </th>
+            <th>Date Started</th>
+            <th>Date Completed</th>
+            <th>Wage Scale</th>
+            <th>Action</th>
+        </tr>
+        {% endif %}
+       {% if contract %} 
+       {% for contract_details in contract %}
+        <tr>
+            <td>{{forloop.counter0|add:page_obj.start_index }}</td>
+            <td><a href="{% url 'crew:person_detail' contract_details.person.id %}"> {{contract_details.person.salutation}} .{{contract_details.person.first_name }} {{ contract_details.person.last_name }}</a> </td>
+            <td> {{contract_details.rank }} </td>
+            <td> {{contract_details.vessel }} </td>
+            <td><a href="#"> <span class="pull-right badge bg-green">
+                Y: {{contract_details.contract_duration.years }} M: {{contract_details.contract_duration.months }} 
+                D: {{contract_details.contract_duration.days }} 
+                </span></a>
+            </td>
+            <td><a href="{% url 'crew:contract_update' contract_details.id %}"> {{contract_details.date_started }} </a> </td>
+            <td><a href="{% url 'crew:contract_update' contract_details.id %}"> {{contract_details.date_expired }}  </a> </td>
+            <td> {{contract_details.wage_scale }} </td>
+            <td> <a type="button" class="btn btn-block btn-danger btn-sm" href="{% url 'crew:contract_delete' contract_details.id %}" >  Delete </a> </td>
+        </tr>
+        {% endfor %} 
+        {% else %}
+        <tr>
+            <td></td>
+            <td>
+                <p>No Contracts To Show.</p>
+            </td>
+        </tr>
+
+
+        {% endif %}
+    </table>
+
+
+ {% if page_obj.paginator.num_pages > 1 %} 
+      <div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{{ request.path}}?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="{{ request.path}}?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+       
+    </span>
+
+ </div>
+{% endif %}
+
+    
+</div>
+<!-- /.box-body -->
+
+
+<!-- /.box -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

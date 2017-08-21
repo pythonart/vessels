@@ -1,0 +1,35 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Register a object   {% endblock %} 
+{% block viewnamesmall %} Enter  Details {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+    {{ form.non_form_errors }}  {# For fromset errors  #}
+    <div  class="box-body">
+      <div class="form-group">  
+        <form enctype="multipart/form-data"  method="POST">
+ 
+             {% csrf_token %}
+          
+             
+                    {% bootstrap_form form %}
+       
+                  {% buttons %}
+
+              <button type="submit" value="Submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Submit
+              </button> 
+                {% endbuttons %}
+
+           
+       </form>
+      </div>
+    </div>
+<!-- /.box-body -->
+{% endblock %}

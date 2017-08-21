@@ -1,0 +1,76 @@
+{% extends "registration/base.html" %} 
+
+{% block content %}
+
+
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="{% url 'login'  %}"><b>Vessel </b> Management </a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+    {% if form.errors and not form.non_field_errors %}
+        <p class="errornote">
+        {% if form.errors.items|length == 1 %} "Please correct the error below." {% else %} "Please correct the errors below."{% endif %}
+          </p>
+    {% endif %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+      <p class="errornote">
+        {{ error }}
+        </p>
+      {% endfor %}
+      {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+           <p> You are authenticated as<b> {{ user.username|title }} </b>, but are not authorized to
+               access this page. Would you like to login to a different account? </p>
+        {% else %}
+              <p> Please login to see this page </p> 
+        {% endif %}
+    {% endif %}
+
+    <form action="{% url 'login'  %}" method="post">
+         {% csrf_token %}
+      <div class="form-group has-feedback">
+         {{ form.username.errors }}
+        <input type="text" id="id_username" maxlength="254" name="username" class="form-control" placeholder="User Name" required>
+        <span class="glyphicon glyphicon-person form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+         {{ form.password.errors }}
+        <input type="password" id="id_password"  name="password" class="form-control" placeholder="Password" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-4 pull-right" >
+          <button type="submit" valud="login" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <input type="hidden" name="next" value="{{ next }}" /> 
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+    <div class="social-auth-links text-center">
+      <p>- OR -</p>
+      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
+        Facebook</a>
+      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+        Google+</a>
+    </div>
+    <!-- /.social-auth-links -->
+
+    <a href="{% url 'password_reset' %}">I forgot my password</a><br>
+    <a href="register.html" class="text-center">Register a new membership</a>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+{% endblock %}
+

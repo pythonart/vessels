@@ -1,0 +1,64 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Certificate List {% endblock %} 
+{% block viewnamesmall %} {{ object |title }}  {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:index' %}"> Crew </a>{% endblock %} 
+{% block content %}
+
+  <div class="box-header with-border">
+      <h5 align="center"> Certificates </h5>
+  </div>
+  <div class="box-body table-responsive">
+       <table class="table table-bordered">
+          <tr>
+            <th rowspan="2" style="width: 10px">#</th>
+            <th rowspan="2" >Certificate Name</th>
+            <th align="justify" colspan="3">Certificate Type </th>
+            <th rowspan="2">Renewal Required</th>
+            <th rowspan="2">Required For Ranks</th>
+            <th rowspan="2">Paid By</th>
+            <th rowspan="2">Reminder Required</th>
+            <th rowspan="2">Action</th>
+        </tr>
+        <tr>
+          <th>National Cert</th>
+            <th>Flag Cert</th>
+            <th>Company Course</th>
+          </tr>
+          {% if certificate_list %}
+            
+            {% for certificate in certificate_list %}
+            <tr>
+              <td> {{ forloop.counter|add:page_obj.start_index }}</td>
+              <td><a href="{% url 'crew:certificate_update' certificate.id %}" > {{ certificate.certificate_name }} </a> </td>
+              <td> {{ certificate.national_cert }} </td>
+              <td> {{ certificate.flag_cert }} </td>
+              <td> {{ certificate.company_required }} </td>
+              <td> {{ certificate.renewal_required }} </td>
+              <td>
+               
+               
+                 {% for i in certificate.required_for_ranks.all %}
+              
+                  <li>   {{ forloop.counter }}  {{  i.rank_name }} </li>
+                      {% endfor %}
+                 </td>
+              <td> {{ certificate.paid_for_by }} </td>
+              <td> {{ certificate.reminder_required }} </td>
+               <td> <a type="button" class="btn btn-block btn-danger btn-sm" href="{% url 'crew:certificate_delete' certificate.id %}" >  Delete </a> </td>
+
+            </tr>
+            {% endfor %}  
+          {% endif %}
+      </table>
+ </div>
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} Crew List {% endblock %} 
+{% block viewnamesmall %} {{ vessel.name }} {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block here %}<a href="{% url 'crew:crewlist' vessel_id %}"> Crew List </a>{% endblock %} 
+{% block content %}
+<!-- Your Page Content Here -->
+<div class="box-body">
+ <div class="col-xs-15 text-center">
+     <h3> IMO Crew List </h3>
+</div>
+  </div>
+<div class="box-body">
+  <table class="table table-bordered">
+  <tr>
+            <th><h5>1 Name of Ship</h5></th>
+            <th><h5>2 Port of Arr</h5></th>
+            <th><h5>3 Date</h5></th>
+  </tr>
+  <tr>
+            <td><b> {{ vessel.name }} </b></td>
+            <td><b> Istanbul </b></td>
+            <td><b> Date </b></td>
+    </tr>
+
+  </table>
+  <table class="table table-bordered">
+  <tr>
+            <th><h5>4 Nationality of Ship</h5></th>
+            <th><h5>5 Next Port</h5></th>
+  </tr>
+  <tr>
+            <td><b>{{ vessel.port_of_registery }} </b></td>
+            <td><b> Malta OPL </b></td>
+    </tr>
+
+  </table>
+  </div>
+<!-- /.box-header -->
+<div class="box-body">
+    <table class="table table-bordered">
+        <tr>
+            {% if crew_list %}
+            <th style="width: 10px">#</th>
+            <th><h6>Family Name,Given Name</h6></th>
+            <th><h6>Key No</h6></th>
+            <th><h6>Rank</h6></th>
+            <th><h6>Nationality</h6></th>
+            <th><h6>Date Of Birth</h6></th>
+            <th><h6>Place of Birth</h6></th>
+            <th><h6>Passport No</h6></th>
+
+        </tr>
+        {% endif %} 
+        {% if crew_list %} {% for person in crew_list %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td> {{ person.person_obj.last_name }}, {{ person.person_obj.first_name }}</td>
+            <td> {{ person.person_obj.key_number }} </td>
+            <td> {{ person.person_obj.rank.rank_short_name }} </td>
+            <td> {{ person.person_obj.nationality }} </td>
+            <td> {{ person.person_obj.dob }} </td>
+            <td> {{ person.person_obj.place_of_birth }} </td>
+            <td> {{ person.passport_obj.certificate_no }} </td>
+        </tr>
+        {% endfor %} 
+        {% else %}
+        <tr>
+            <td></td>
+            <td>
+                <p>No Crew on board.</p>
+            </td>
+        </tr>
+
+
+        {% endif %}
+    </table>
+</div>
+<!-- /.box-body -->
+<div class="box-footer clearfix">
+    <h6> 12 Date and Signature by Master </h6>
+</div>
+<div class="box-footer clearfix">
+    <div class="col-xs-5 text-center">
+     <h5>{{ master.person_obj.salutation }}.{{ master.person_obj.first_name }} {{ master.person_obj.last_name }} </h5>
+</div>
+</div>
+</div>
+<!-- /.box -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+  
+{% endblock %}
+{%  block footer %}{% endblock %}

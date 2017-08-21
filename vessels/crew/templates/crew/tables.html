@@ -1,0 +1,15 @@
+{% extends "crew/base.html" %} 
+{% block title %} Vessel Management {% endblock %} 
+{% block viewname %} {{ viewname }} {% endblock %} 
+{% block viewnamesmall %} {{ viewname }} {% endblock %}
+{% block level %}<a href="{% url 'crew:index' %}"> Crew </a>{%endblock %} 
+{% block content %}
+{% load render_table from django_tables2 %}
+
+<div class="box-body table-responsive">
+
+{% render_table table %}
+
+
+</div>
+{% endblock %}
