@@ -26,7 +26,8 @@ SECRET_KEY = '3eexg9um183at6amvi77-&znd995ozy+#o#=w0d$j3*d%xujbh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [ '127.0.0.1','keeganpatrao.pythonanywhere.com']
 
 
 # Application definition
@@ -43,8 +44,7 @@ INSTALLED_APPS = [
     'crew.apps.CrewConfig',
     'bootstrap3',
     'django_tables2',
-    'crudbuilder',
-   
+
 ]
 
 MIDDLEWARE = [
@@ -128,14 +128,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+#MEDIA_ROOT='/temp/'
+#MEDIA_ROOT='/home/keeganpatrao/vessels/vessels/temp/'
+
+MEDIA_ROOT=os.path.join(BASE_DIR,'temp')
+MEDIA_URL='/crew/temp/'
 
 
-MEDIA_ROOT='temp/'
-MEDIA_URL='http://127.0.0.1:8000/crew/temp/'
+#MEDIA_URL=os.path.join(BASE_DIR, 'temp/')
 
 LOGIN_REDIRECT_URL= 'crew:index'
 #LOGOUT_REDIRECT_URL='crew:logout'
 
+SITE_ID = 2
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
